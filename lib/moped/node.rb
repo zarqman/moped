@@ -137,7 +137,7 @@ module Moped
     #
     # @since 1.2.0
     def disconnect
-      connection{ |conn| conn.disconnect }
+      connection{ |conn| conn.disconnect } if address.resolved
       true
     end
 
@@ -174,9 +174,9 @@ module Moped
            yield(conn.first)
         else
           connection do |conn|
-            stack(:connection) << conn
-            connect(conn) unless conn.connected?
+            connect(conn) unless conn.alive?
             conn.apply_credentials(@credentials)
+            stack(:connection) << conn
             yield(conn)
           end
         end
