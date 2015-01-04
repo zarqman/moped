@@ -24,6 +24,7 @@ module Moped
       Errors::QueryFailure => Ignore,
       Errors::NotMaster => Retry,
       Errors::ReplicaSetReconfigured => Retry,
+      ::Timeout::Error => Retry,
     }.freeze
 
     # Get the appropriate failover handler given the provided exception.
